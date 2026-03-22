@@ -9,7 +9,8 @@ class AppointmentPolicy
 {
     public function viewAny(User $user): bool
     {
-        return $user->is_active;
+        return $user->is_active
+            && ($user->isAdmin() || $user->isDoctor() || $user->isAssistant());
     }
 
     public function view(User $user, Appointment $appointment): bool
@@ -23,7 +24,8 @@ class AppointmentPolicy
 
     public function create(User $user): bool
     {
-        return $user->is_active;
+        return $user->is_active
+            && ($user->isAdmin() || $user->isAssistant());
     }
 
     public function update(User $user, Appointment $appointment): bool
