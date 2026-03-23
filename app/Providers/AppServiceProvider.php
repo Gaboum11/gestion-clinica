@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Models\Appointment;
 use App\Models\MedicalRecord;
+use App\Models\Patient;
 use App\Models\User;
+use App\Observers\PatientObserver;
 use App\Policies\AppointmentPolicy;
 use App\Policies\MedicalRecordPolicy;
 use App\Policies\UserPolicy;
@@ -29,5 +31,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Appointment::class, AppointmentPolicy::class);
         Gate::policy(MedicalRecord::class, MedicalRecordPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
+
+        // Registrar observadores
+        Patient::observe(PatientObserver::class);
     }
 }
