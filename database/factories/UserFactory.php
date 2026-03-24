@@ -22,12 +22,29 @@ class UserFactory extends Factory
         ['name' => 'Melisa Rivas'],
         ['name' => 'Karla Contreras'],
         ['name' => 'Gabriel Martínez'],
+        ['name' => 'Diego Baños'],
+        ['name' => 'Christian Renderos'],
+        ['name' => 'Fernanda Barrera'],
+        ['name' => 'Francisco Rauda'],
+        ['name' => 'Alberto Ehlerman'],
+        ['name' => 'Fiorella Guzman'],
+     
     ];
 
     private static array $assistantNames = [
         ['name' => 'Patricia Rodrígez'],
         ['name' => 'Mario Fernández'],
         ['name' => 'Erick Gutiérrez'],
+        ['name' => 'Ana María García'],
+        ['name' => 'Javier Ramírez'],
+        ['name' => 'Lucia Mendoza'],
+        ['name' => 'Rodrigo Castro'],
+        ['name' => 'Isabella Moreno'],
+        ['name' => 'Diego Reyes'],
+        ['name' => 'Beatriz Herrera'],
+        ['name' => 'Cristian Flores'],
+        ['name' => 'Gabriela López'],
+        ['name' => 'Fernando Jiménez'],
     ];
 
     public function definition(): array

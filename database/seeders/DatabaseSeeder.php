@@ -17,6 +17,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // First, seed roles and permissions
+        $this->call(RolesAndPermissionsSeeder::class);
+
         $specialties = [
             ['name' => 'Cardiología', 'description' => 'Especialidad en problemas del corazón y sistema cardiovascular'],
             ['name' => 'Pediatría', 'description' => 'Especialidad en salud de niños y adolescentes'],
@@ -30,6 +33,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $admin = User::factory()->asAdmin()->create();
+        $admin->syncRoles(['Admin']);
 
         $doctorNames = [
             'Alejandra Arriola',
@@ -37,13 +41,19 @@ class DatabaseSeeder extends Seeder
             'Melisa Rivas',
             'Karla Contreras',
             'Gabriel Martínez',
+            'Diego Baños',
+            'Christian Renderos',
+            'Fernanda Barrera',
+            'Francisco Rauda',
+            'Alberto Ehlerman',
+            'Fiorella Guzman',
         ];
 
         $doctors = [];
         $specialtyIds = Specialty::pluck('id')->toArray();
 
         foreach ($doctorNames as $index => $name) {
-            $doctors[] = User::create([
+            $doctor = User::create([
                 'name' => $name,
                 'email' => strtolower(str_replace(' ', '.', $name) . '@clinica.com'),
                 'password' => bcrypt('password'),
@@ -52,6 +62,8 @@ class DatabaseSeeder extends Seeder
                 'specialty_id' => $specialtyIds[$index % count($specialtyIds)],
                 'is_active' => true,
             ]);
+            $doctor->syncRoles(['Medico']);
+            $doctors[] = $doctor;
         }
 
         $doctors = collect($doctors);
@@ -60,11 +72,21 @@ class DatabaseSeeder extends Seeder
             'Patricia Rodrígez',
             'Mario Fernández',
             'Erick Gutiérrez',
+            'Ana María García',
+            'Javier Ramírez',
+            'Lucia Mendoza',
+            'Rodrigo Castro',
+            'Isabella Moreno',
+            'Diego Reyes',
+            'Beatriz Herrera',
+            'Cristian Flores',
+            'Gabriela López',
+            'Fernando Jiménez',
         ];
 
         $assistants = [];
         foreach ($assistantNames as $name) {
-            $assistants[] = User::create([
+            $assistant = User::create([
                 'name' => $name,
                 'email' => strtolower(str_replace(' ', '.', $name) . '@clinica.com'),
                 'password' => bcrypt('password'),
@@ -73,6 +95,8 @@ class DatabaseSeeder extends Seeder
                 'specialty_id' => null,
                 'is_active' => true,
             ]);
+            $assistant->syncRoles(['Asistente']);
+            $assistants[] = $assistant;
         }
 
         $assistants = collect($assistants);

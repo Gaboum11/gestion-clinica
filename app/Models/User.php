@@ -3,16 +3,22 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable, HasRoles;
+
+    protected string $guard_name = 'web';
 
     /**
      * The attributes that are mass assignable.
@@ -69,16 +75,21 @@ class User extends Authenticatable
 
     public function isAdmin(): bool
     {
-        return $this->role === 'admin';
+        return $this->role === 'admin' || $this->hasRole('Admin');
     }
 
     public function isDoctor(): bool
     {
-        return $this->role === 'doctor';
+        return $this->role === 'doctor' || $this->hasRole('Medico');
     }
 
     public function isAssistant(): bool
     {
-        return $this->role === 'assistant';
+        return $this->role === 'assistant' || $this->hasRole('Asistente');
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $this->is_active && ($this->isAdmin() || $this->isDoctor() || $this->isAssistant());
     }
 }

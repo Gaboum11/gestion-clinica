@@ -1,0 +1,704 @@
+{
+  "info": {
+    "_postman_id": "gestion-clinica-api",
+    "name": "Gestion Clínica - API CRUD",
+    "description": "Collection de prueba para API CRUD de Pacientes, Expedientes y Usuarios",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "AUTENTICACION",
+      "item": [
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('token', jsonData.access_token);",
+                  "    console.log('Token Admin guardado.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{admin_email}}\",\n  \"password\": \"{{admin_password}}\",\n  \"device_name\": \"postman-admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login Medico",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('token', jsonData.access_token);",
+                  "    console.log('Token Medico guardado.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{doctor_email}}\",\n  \"password\": \"{{doctor_password}}\",\n  \"device_name\": \"postman-doctor\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Login Asistente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('token', jsonData.access_token);",
+                  "    console.log('Token Asistente guardado.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{assistant_email}}\",\n  \"password\": \"{{assistant_password}}\",\n  \"device_name\": \"postman-assistant\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Perfil del Usuario Autenticado",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/user",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "user"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Logout - Revocar Token",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/token",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "token"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "PACIENTES",
+      "item": [
+        {
+          "name": "Listar Pacientes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/patients?page=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear Paciente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('patient_id', jsonData.data.id);",
+                  "    console.log('Paciente creado con ID: ' + jsonData.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Carlos\",\n  \"last_name\": \"López\",\n  \"email\": \"carlos.lopez@example.com\",\n  \"phone\": \"555-1234\",\n  \"date_of_birth\": \"1990-05-15\",\n  \"gender\": \"male\",\n  \"address\": \"Calle Principal 123, Apto 4\",\n  \"emergency_contact_name\": \"María López\",\n  \"emergency_contact_phone\": \"555-5678\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/patients",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Paciente Específico",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/patients/{{patient_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patient_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Paciente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"first_name\": \"Carlos\",\n  \"last_name\": \"López García\",\n  \"phone\": \"555-9999\",\n  \"address\": \"Calle Nueva 456\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/patients/{{patient_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patient_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Paciente",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/patients/{{patient_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patient_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "EXPEDIENTES MEDICOS",
+      "item": [
+        {
+          "name": "Listar Expedientes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/medical-records?page=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "medical-records"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crear Expediente",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('medical_record_id', jsonData.data.id);",
+                  "    console.log('Expediente creado con ID: ' + jsonData.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": {{patient_id}},\n  \"condition\": \"Diabetes tipo 2\",\n  \"medications\": \"Metformina 500mg, una vez al día\",\n  \"medical_history\": \"Antecedente de hipertensión, padre diabético\",\n  \"last_visit_date\": \"2026-03-20T10:30:00\",\n  \"notes\": \"Paciente requiere seguimiento mensual, análisis de glucosa cada mes\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/medical-records",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "medical-records"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Expediente Específico",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/medical-records/{{medical_record_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "medical-records",
+                "{{medical_record_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Expediente por Paciente",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/patients/{{patient_id}}/medical-record",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "patients",
+                "{{patient_id}}",
+                "medical-record"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Expediente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"condition\": \"Diabetes tipo 2 controlada\",\n  \"medications\": \"Metformina 1000mg, dos veces al día\",\n  \"medical_history\": \"Antecedente de hipertensión, padre diabético, última cirugía 2020\",\n  \"last_visit_date\": \"2026-03-23T14:00:00\",\n  \"notes\": \"Glucosa controlada, continuar con tratamiento actual\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/medical-records/{{medical_record_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "medical-records",
+                "{{medical_record_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Expediente",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/medical-records/{{medical_record_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "medical-records",
+                "{{medical_record_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "USUARIOS",
+      "item": [
+        {
+          "name": "Listar Usuarios",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users?page=1",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Obtener Usuario Específico",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Actualizar Usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dr. Juan Carlos García López\",\n  \"password\": \"NewSecurePass123\",\n  \"password_confirmation\": \"NewSecurePass123\",\n  \"is_active\": true\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Eliminar Usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/users/{{user_id}}",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://gestion-clinica.test",
+      "type": "string",
+      "description": "URL base de la aplicación"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "Token Bearer de autenticación - Se obtiene automáticamente al hacer login"
+    },
+    {
+      "key": "admin_email",
+      "value": "admin@clinica.com",
+      "type": "string",
+      "description": "Correo para registro/login de administrador"
+    },
+    {
+      "key": "admin_password",
+      "value": "password123",
+      "type": "string",
+      "description": "Contrasena para registro/login de administrador"
+    },
+    {
+      "key": "doctor_email",
+      "value": "medico@clinica.com",
+      "type": "string",
+      "description": "Correo del usuario con rol medico creado desde Filament"
+    },
+    {
+      "key": "doctor_password",
+      "value": "password123",
+      "type": "string",
+      "description": "Contrasena del usuario con rol medico"
+    },
+    {
+      "key": "assistant_email",
+      "value": "asistente@clinica.com",
+      "type": "string",
+      "description": "Correo del usuario con rol asistente creado desde Filament"
+    },
+    {
+      "key": "assistant_password",
+      "value": "password123",
+      "type": "string",
+      "description": "Contrasena del usuario con rol asistente"
+    },
+    {
+      "key": "patient_id",
+      "value": "",
+      "type": "string",
+      "description": "ID del paciente creado - Se obtiene automáticamente al crear un paciente"
+    },
+    {
+      "key": "medical_record_id",
+      "value": "",
+      "type": "string",
+      "description": "ID del expediente médico creado - Se obtiene automáticamente al crear un expediente"
+    },
+    {
+      "key": "user_id",
+      "value": "",
+      "type": "string",
+      "description": "ID del usuario creado - Se obtiene automáticamente al crear un usuario"
+    }
+  ]
+}
