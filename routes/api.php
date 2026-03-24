@@ -36,7 +36,7 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
     Route::get('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'show']);
     Route::put('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'update']);
     Route::delete('/medical-records/{medicalRecord}', [MedicalRecordController::class, 'destroy']);
-    
+
     // Endpoint para obtener expediente por paciente
     Route::get('/patients/{patientId}/medical-record', [MedicalRecordController::class, 'byPatient']);
 
@@ -48,6 +48,6 @@ Route::group(['prefix' => 'v1', 'middleware' => ['auth:sanctum']], function () {
 
     // ========== CITAS ==========
     Route::post('/appointments', [AppointmentController::class, 'store'])
-        ->withoutMiddleware('auth:sanctum')
+        // ->withoutMiddleware('auth:sanctum')
         ->middleware(['can:create,'.Appointment::class]);
 });

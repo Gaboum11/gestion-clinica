@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "gestion-clinica-api",
     "name": "Gestion Clínica - API CRUD",
-    "description": "Collection de prueba para API CRUD de Pacientes, Expedientes y Usuarios",
+    "description": "Collection de prueba para API CRUD de Pacientes, Expedientes, Citas y Usuarios",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -131,6 +131,29 @@
         },
         {
           "name": "Perfil del Usuario Autenticado",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "",
+                  "    if (jsonData && jsonData.id) {",
+                  "        pm.environment.set('user_id', jsonData.id);",
+                  "        console.log('user_id guardado: ' + jsonData.id);",
+                  "    }",
+                  "",
+                  "    var doctorEmail = pm.environment.get('doctor_email');",
+                  "    if (jsonData && jsonData.id && jsonData.email && doctorEmail && jsonData.email.toLowerCase() === doctorEmail.toLowerCase()) {",
+                  "        pm.environment.set('doctor_id', jsonData.id);",
+                  "        console.log('doctor_id guardado: ' + jsonData.id);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
           "request": {
             "method": "GET",
             "header": [
@@ -519,6 +542,56 @@
       ]
     },
     {
+      "name": "CITAS",
+      "item": [
+        {
+          "name": "Crear Cita",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('appointment_id', jsonData.data.id);",
+                  "    console.log('Cita creada con ID: ' + jsonData.data.id);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"patient_id\": {{patient_id}},\n  \"doctor_id\": {{doctor_id}},\n  \"start_datetime\": \"{{appointment_start_datetime}}\",\n  \"end_datetime\": \"{{appointment_end_datetime}}\",\n  \"reason\": \"{{appointment_reason}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/appointments",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "appointments"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
       "name": "USUARIOS",
       "item": [
         {
@@ -647,6 +720,24 @@
       "description": "Token Bearer de autenticación - Se obtiene automáticamente al hacer login"
     },
     {
+      "key": "appointment_start_datetime",
+      "value": "2026-03-25T10:00:00",
+      "type": "string",
+      "description": "Fecha y hora de inicio para crear cita (formato ISO)"
+    },
+    {
+      "key": "appointment_end_datetime",
+      "value": "2026-03-25T10:30:00",
+      "type": "string",
+      "description": "Fecha y hora de fin para crear cita (formato ISO)"
+    },
+    {
+      "key": "appointment_reason",
+      "value": "Consulta general",
+      "type": "string",
+      "description": "Motivo de la cita"
+    },
+    {
       "key": "admin_email",
       "value": "admin@clinica.com",
       "type": "string",
@@ -681,6 +772,18 @@
       "value": "password123",
       "type": "string",
       "description": "Contrasena del usuario con rol asistente"
+    },
+    {
+      "key": "doctor_id",
+      "value": "",
+      "type": "string",
+      "description": "ID del doctor (usuario con rol medico) para crear citas"
+    },
+    {
+      "key": "appointment_id",
+      "value": "",
+      "type": "string",
+      "description": "ID de la cita creada - Se obtiene automáticamente al crear una cita"
     },
     {
       "key": "patient_id",
