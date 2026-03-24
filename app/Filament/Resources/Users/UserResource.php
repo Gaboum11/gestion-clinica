@@ -57,7 +57,6 @@ class UserResource extends Resource
     {
         /** @var User|null $user */
         $user = Auth::user();
-
         return (bool) $user?->is_active && $user->isAdmin();
     }
 
@@ -75,4 +74,10 @@ class UserResource extends Resource
     {
         return static::canAccess();
     }
+
+    public static function canAccessPanel(): bool
+    {
+        return static::canAccess();
+    }
 }
+
