@@ -41,6 +41,12 @@ class DatabaseSeeder extends Seeder
             'Melisa Rivas',
             'Karla Contreras',
             'Gabriel Martínez',
+            'Diego Baños',
+            'Christian Renderos',
+            'Fernanda Barrera',
+            'Francisco Rauda',
+            'Alberto Ehlerman',
+            'Fiorella Guzman',
         ];
 
         $doctors = [];
@@ -66,6 +72,16 @@ class DatabaseSeeder extends Seeder
             'Patricia Rodrígez',
             'Mario Fernández',
             'Erick Gutiérrez',
+            'Ana María García',
+            'Javier Ramírez',
+            'Lucia Mendoza',
+            'Rodrigo Castro',
+            'Isabella Moreno',
+            'Diego Reyes',
+            'Beatriz Herrera',
+            'Cristian Flores',
+            'Gabriela López',
+            'Fernando Jiménez',
         ];
 
         $assistants = [];
